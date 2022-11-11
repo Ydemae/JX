@@ -1,22 +1,19 @@
-// C program to store temperature of two cities of a week and display it.
 #include <stdio.h>
-int CITY = 2;
-int WEEK = 7;
-int Tab[6][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}, {13, 14, 15}, {16, 17, 18}};
+void creerJeu(int tab[7][7], int *L, int *C)
+{
+    do
+    {
+        printf("Entrez le nimbre de lignes de la grille : ");
+        scanf("%d", &(*L));
+        printf("Entrez le nimbre de lignes de la grille : ");
+        scanf("%d", &(*C));
+        getchar();
+    } while ((*L < 3 || 7 < *L) || (*C < 3 || 7 < *C) || (*L % 2 == 0) || (*C % 2 == 0));
+}
 int main()
 {
-
-    // Using nested loop to store values in a 2d array
-
-    printf("\nDisplaying values: \n\n");
-
-    // Using nested loop to display vlues of a 2d array
-    for (int i = 0; i < 6; ++i)
-    {
-        for (int j = 0; j < 3; ++j)
-        {
-            printf("City %d, Day %d = %d\n", i + 1, j + 1, Tab[i][j]);
-        }
-    }
-    return 0;
+    int machin[7][7], *L = 10, *C = 1;
+    printf("%d + %d \n", L, C);
+    creerJeu(machin, L, C);
+    printf("%d + %d", L, C);
 }
