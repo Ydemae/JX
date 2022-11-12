@@ -2,36 +2,33 @@
 int a, b;
 int Tab2[50][2] = {{20, 10}, {15, 70}, {12, 5}};
 
-int creerplateau(int ligne, int colonne)
+void creerplateau(int *ligne, int *colonne)
 {
     do
     {
         printf("Donner le nombre de lignes du plateau. \n");
-        scanf("%d", ligne);
+        scanf("%d", &(*ligne));
         printf("Donner le nombre de colonnes du plateau. \n");
-        scanf("%d", colonne);
-    }
-    while (ligne >= 7 || colonne >= 7);
-    return ligne;
+        scanf("%d", &(*colonne));
+    } while (*ligne % 2 == 0 || *colonne % 2 == 0 || *ligne > 7 || ligne < 3 || *colonne > 7 || *colonne < 3);
 }
 
 int effacerTab(int *tab[7][7])
 {
-    for (int i = 0; i <=6; i++)
-    for (int j = 0; j <= 6; j++)
-    {
-        tab[i][j] = 0;
-    }
+    for (int i = 0; i <= 6; i++)
+        for (int j = 0; j <= 6; j++)
+        {
+            tab[i][j] = 0;
+        }
     return 0;
 }
 
 char getpseudo(int numJoueur, char pseudo[])
 {
     printf("Quel est votre pseudo joueur %d? \n", numJoueur);
-    scanf("%s",pseudo);
+    scanf("%s", pseudo);
     return pseudo;
 }
-
 
 int verifieCase(int tab[7][7], int ligneCible, int columnCible)
 {
@@ -45,10 +42,10 @@ int verifieCase(int tab[7][7], int ligneCible, int columnCible)
     }
 }
 
-int tour(int nbTour, int *tab[7][7], int ligne, int colonne, char pseudoJ1[], char pseudoJ2[])
+void tour(int nbTour, int *tab[7][7], int ligne, int colonne, char pseudoJ1[], char pseudoJ2[])
 {
     int ligneCible, colonneCible;
-    for (int i = 1; i <=2; i++)
+    for (int i = 1; i <= 2; i++)
     {
         afficheTab(tab, ligne, colonne);
         printf("Tour du joueur %d \n", i);
@@ -58,8 +55,9 @@ int tour(int nbTour, int *tab[7][7], int ligne, int colonne, char pseudoJ1[], ch
             scanf("%d", &ligneCible);
             printf("Dans quelle colonne voulez-vous placer votre jeton?");
             scanf("%d", &colonneCible);
-        }
-        while (tab[ligneCible][colonneCible] == 0);
+            ligneCible--;
+            colonneCible--;
+        } while (tab[ligneCible][colonneCible] != 0 || ligneCible < 0 || ligneCible > ligne - 1 || colonneCible > colonne - 1 || colonneCible < 0);
         if (i == 1)
         {
             tab[ligneCible][colonneCible] = nbTour;
@@ -69,7 +67,6 @@ int tour(int nbTour, int *tab[7][7], int ligne, int colonne, char pseudoJ1[], ch
             tab[ligneCible][colonneCible] = -nbTour;
         }
     }
-    return 0;
 }
 
 int afficheTab(int tab[][7], int ligne, int column)
@@ -153,17 +150,45 @@ int afficheScore(int tab[][2], int nbParties, char pseudoJ1[], char pseudoJ2[])
     return 0;
 }
 
+int NouvellePartie(int EnJeu)
+{
+    do
+    {
+        printf("Souhaitez vous continuer a jouer? (0 si non, 1 si oui)");
+        scanf("%d", EnJeu);
+    } while (EnJeu != 1 && EnJeu != 0);
+    return EnJeu;
+}
+
+/*void finPartie(int tab[7][7], int ligne, int colonne)
+{
+    for (int i; i < ligne; i++)
+        for (int j; j < colonne; j++)
+        {
+            if (tab[i][j] == 0)
+            {
+
+            }
+        }
+}*/
+
 int main()
 {
-    
-    int /*plateauJeu[7][7],*/ enJeu = 1, ligne, colonne;
+
+    int plateauJeu[7][7], enJeu = 1, ligne, colonne, nbParties = 0;
     char pseudoJ1[30], pseudoJ2[30];
-    /*effacerTab(plateauJeu);*/
-    int plateauJeu[7][7] = {{1,3,-3}, {2, -1, 0}, {1, 6, -6}};
-    afficheTab(plateauJeu, 3, 3);
-    /*getpseudo(1, pseudoJ1);
-    getpseudo(2,pseudoJ2);*/
-
-
+    getpseudo(1, pseudoJ1);
+    getpseudo(2, pseudoJ2);
+    while (enJeu == 1)
+    {
+        nbParties += 1;
+        effacerTab(plateauJeu);
+        creerplateau(&ligne, &colonne);
+        for (int i = 1; i < ligne * colonne / 2 - 1; i++)
+        {
+            tour(i, plateauJeu, ligne, colonne, pseudoJ1, pseudoJ2);
+        }
+        NouvellePartie(enJeu);
+    }
     return 0;
 }
