@@ -1,6 +1,4 @@
 #include <stdio.h>
-int a, b;
-int Tab2[50][2] = {{20, 10}, {15, 70}, {12, 5}};
 
 void creerplateau(int *ligne, int *colonne)
 {
@@ -13,7 +11,7 @@ void creerplateau(int *ligne, int *colonne)
     } while (*ligne % 2 == 0 || *colonne % 2 == 0 || *ligne > 7 || ligne < 3 || *colonne > 7 || *colonne < 3);
 }
 
-int effacerTab(int *tab[7][7])
+int effacerTab(int tab[7][7])
 {
     for (int i = 0; i <= 6; i++)
         for (int j = 0; j <= 6; j++)
@@ -42,12 +40,11 @@ int verifieCase(int tab[7][7], int ligneCible, int columnCible)
     }
 }
 
-void tour(int nbTour, int *tab[7][7], int ligne, int colonne, char pseudoJ1[], char pseudoJ2[])
+void tour(int nbTour, int tab[7][7], int ligne, int colonne, char pseudoJ1[], char pseudoJ2[])
 {
     int ligneCible, colonneCible;
     for (int i = 1; i <= 2; i++)
     {
-        afficheTab(tab, ligne, colonne);
         printf("Tour du joueur %d \n", i);
         do
         {
@@ -66,16 +63,17 @@ void tour(int nbTour, int *tab[7][7], int ligne, int colonne, char pseudoJ1[], c
         {
             tab[ligneCible][colonneCible] = -nbTour;
         }
+        afficheTab(tab, ligne, colonne);
     }
 }
 
-int afficheTab(int tab[][7], int ligne, int column)
+int afficheTab(int tab[7][7], int ligne, int colonne)
 {
     for (int compteLigne = -1; compteLigne < ligne; compteLigne++)
     {
         if (compteLigne == -1)
         {
-            for (int i = 0; i <= column; i++)
+            for (int i = 0; i <= colonne; i++)
             {
                 printf(" %3d", i);
             }
@@ -83,7 +81,7 @@ int afficheTab(int tab[][7], int ligne, int column)
         }
         else
         {
-            for (int compteColonne = 0; compteColonne < column; compteColonne++)
+            for (int compteColonne = 0; compteColonne < colonne; compteColonne++)
             {
                 if (compteColonne == 0)
                 {
@@ -113,7 +111,7 @@ int afficheScore(int tab[][2], int nbParties, char pseudoJ1[], char pseudoJ2[])
 
     int totalJ1 = 0, totalJ2 = 0;
     char *vainqueur[30];
-    for (int i = 0; i < nbParties; i++)
+    for (int i = 0; i <= nbParties; i++)
     {
         if (tab[i][0] < tab[i][1])
         {
@@ -128,11 +126,8 @@ int afficheScore(int tab[][2], int nbParties, char pseudoJ1[], char pseudoJ2[])
             *vainqueur = "Les deux ! C'est une egalite !";
         }
         printf("Partie %d\nResultat : %d contre %d.\nVainqueur : %s \n", i + 1, tab[i][0], tab[i][1], *vainqueur);
-        if (i < nbParties)
-        {
-            totalJ1 += tab[i][0];
-            totalJ2 += tab[i][1];
-        }
+        totalJ1 += tab[i][0];
+        totalJ2 += tab[i][1];
     }
     if (totalJ1 > totalJ2)
     {
@@ -150,45 +145,67 @@ int afficheScore(int tab[][2], int nbParties, char pseudoJ1[], char pseudoJ2[])
     return 0;
 }
 
-int NouvellePartie(int EnJeu)
+int NouvellePartie(int *EnJeu)
 {
     do
     {
         printf("Souhaitez vous continuer a jouer? (0 si non, 1 si oui)");
-        scanf("%d", EnJeu);
-    } while (EnJeu != 1 && EnJeu != 0);
-    return EnJeu;
+        scanf("%d", &(*EnJeu));
+    } while (*EnJeu != 1 && *EnJeu != 0);
 }
 
-/*void finPartie(int tab[7][7], int ligne, int colonne)
+void comptePoints(int tab[7][7], int ligne, int colonne, int score[][2], int nbParties)
 {
-    for (int i; i < ligne; i++)
-        for (int j; j < colonne; j++)
+    int ligneLastCase, colonneLastCase, compteLigne, compteColonne, scoreJ1 = 0, scoreJ2 = 0;
+    for (compteLigne = 0; compteLigne < ligne; compteLigne++)
+        for (compteColonne = 0; compteColonne < colonne; compteColonne++)
         {
-            if (tab[i][j] == 0)
+            if (tab[compteLigne][compteColonne] == 0)
             {
-
+                ligneLastCase = compteLigne;
+                colonneLastCase = compteColonne;
+                break;
             }
         }
-}*/
+    for (compteColonne = colonneLastCase - 1; compteColonne <= colonneLastCase + 1; compteColonne++)
+        for (compteLigne = ligneLastCase - 1; compteLigne <= ligneLastCase + 1; compteLigne++)
+        {
+            if (compteColonne >= 0 && compteColonne < colonne && compteLigne >= 0 && compteLigne < ligne)
+            {
+                if (tab[compteLigne][compteColonne] < 0)
+                {
+                    scoreJ2 += abs(tab[compteLigne][compteColonne]);
+                }
+                else if (tab[compteLigne][compteColonne] > 0)
+                {
+                    scoreJ1 += tab[compteLigne][compteColonne];
+                }
+            }
+        }
+    score[nbParties][0] = scoreJ1;
+    score[nbParties][1] = scoreJ2;
+}
 
 int main()
 {
 
-    int plateauJeu[7][7], enJeu = 1, ligne, colonne, nbParties = 0;
+    int plateauJeu[7][7], enJeu = 1, ligne, colonne, nbPartie = 0, scoreTotal[50][2];
     char pseudoJ1[30], pseudoJ2[30];
     getpseudo(1, pseudoJ1);
     getpseudo(2, pseudoJ2);
     while (enJeu == 1)
     {
-        nbParties += 1;
         effacerTab(plateauJeu);
         creerplateau(&ligne, &colonne);
-        for (int i = 1; i < ligne * colonne / 2 - 1; i++)
+        afficheTab(plateauJeu, ligne, colonne);
+        for (int i = 1; i <= ligne * colonne / 2; i++)
         {
             tour(i, plateauJeu, ligne, colonne, pseudoJ1, pseudoJ2);
         }
-        NouvellePartie(enJeu);
+        comptePoints(plateauJeu, ligne, colonne, scoreTotal, nbPartie);
+        afficheScore(scoreTotal, nbPartie, pseudoJ1, pseudoJ2);
+        NouvellePartie(&enJeu);
+        nbPartie += 1;
     }
     return 0;
 }
