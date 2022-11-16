@@ -14,8 +14,10 @@ void creerplateau(int *ligne, int *colonne)
     {
         printf("Donner le nombre de lignes du plateau, ce nombre doit etre impair. \n");
         scanf("%d", &(*ligne));
+        getchar();
         printf("Donner le nombre de colonnes du plateau, ce nombre doit etre impair. \n");
         scanf("%d", &(*colonne));
+        getchar();
     } while (*ligne % 2 == 0 || *colonne % 2 == 0 || *ligne > 7 || *ligne < 3 || *colonne > 7 || *colonne < 3);
 }
 
@@ -87,8 +89,10 @@ void tour(int nbTour, int tab[7][7], int ligne, int colonne, int firstPlayer)
             {
                 printf("Sur quelle ligne voulez vous placer votre jeton? ");
                 scanf("%d", &ligneCible);
+                getchar();
                 printf("Dans quelle colonne voulez-vous placer votre jeton? ");
                 scanf("%d", &colonneCible);
+                getchar();
                 ligneCible--;
                 colonneCible--;
                 if (tab[ligneCible][colonneCible] != 0 || ligneCible < 0 || ligneCible > ligne - 1 || colonneCible > colonne - 1 || colonneCible < 0) printf("\n\e[7;31mveuillez saisir une case valide\e[0m\n");
@@ -113,8 +117,10 @@ void tour(int nbTour, int tab[7][7], int ligne, int colonne, int firstPlayer)
             {
                 printf("Sur quelle ligne voulez vous placer votre jeton?");
                 scanf("%d", &ligneCible);
+                getchar();
                 printf("Dans quelle colonne voulez-vous placer votre jeton?");
                 scanf("%d", &colonneCible);
+                getchar();
                 ligneCible--;
                 colonneCible--;
                 if (tab[ligneCible][colonneCible] != 0 || ligneCible < 0 || ligneCible > ligne - 1 || colonneCible > colonne - 1 || colonneCible < 0) printf("\n\e[7;31mveuillez saisir une case valide\e[0m\n");
