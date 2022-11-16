@@ -29,11 +29,50 @@ int effacerTab(int tab[7][7])
     return 0;
 }
 
-char getpseudo(int numJoueur, char pseudo[])
+char * getpseudo(int numJoueur, char pseudo[])
 {
     printf("Quel est votre pseudo joueur %d? \n", numJoueur);
     scanf("%s", pseudo);
     return pseudo;
+}
+
+int afficheTab(int tab[7][7], int ligne, int colonne)
+{
+    for (int compteLigne = -1; compteLigne < ligne; compteLigne++)
+    {
+        if (compteLigne == -1)
+        {
+            for (int i = 0; i <= colonne; i++)
+            {
+                printf("\e[0;32m %3d\e[0m", i);
+            }
+            printf("\n");
+        }
+        else
+        {
+            for (int compteColonne = 0; compteColonne < colonne; compteColonne++)
+            {
+                if (compteColonne == 0)
+                {
+                    printf("\e[0;32m %3d\e[0m||", compteLigne + 1);
+                }
+                if (tab[compteLigne][compteColonne] > 0)
+                {
+                    printf("\e[1;34m%3d\e[0m|", tab[compteLigne][compteColonne]);
+                }
+                else if (tab[compteLigne][compteColonne] < 0)
+                {
+                    printf("\e[1;31m%3d\e[0m|", abs(tab[compteLigne][compteColonne]));
+                }
+                else
+                {
+                    printf("\e[1;29m%3d\e[0m|", tab[compteLigne][compteColonne]);
+                }
+            }
+            printf("\n");
+        }
+    }
+    return 0;
 }
 
 void tour(int nbTour, int tab[7][7], int ligne, int colonne, int firstPlayer)
@@ -93,45 +132,6 @@ void tour(int nbTour, int tab[7][7], int ligne, int colonne, int firstPlayer)
     }
 }
 
-int afficheTab(int tab[7][7], int ligne, int colonne)
-{
-    for (int compteLigne = -1; compteLigne < ligne; compteLigne++)
-    {
-        if (compteLigne == -1)
-        {
-            for (int i = 0; i <= colonne; i++)
-            {
-                printf("\e[0;32m %3d\e[0m", i);
-            }
-            printf("\n");
-        }
-        else
-        {
-            for (int compteColonne = 0; compteColonne < colonne; compteColonne++)
-            {
-                if (compteColonne == 0)
-                {
-                    printf("\e[0;32m %3d\e[0m||", compteLigne + 1);
-                }
-                if (tab[compteLigne][compteColonne] > 0)
-                {
-                    printf("\e[1;34m%3d\e[0m|", tab[compteLigne][compteColonne]);
-                }
-                else if (tab[compteLigne][compteColonne] < 0)
-                {
-                    printf("\e[1;31m%3d\e[0m|", abs(tab[compteLigne][compteColonne]));
-                }
-                else
-                {
-                    printf("\e[1;29m%3d\e[0m|", tab[compteLigne][compteColonne]);
-                }
-            }
-            printf("\n");
-        }
-    }
-    return 0;
-}
-
 int afficheScore(int tab[][2], int nbParties, char pseudoJ1[], char pseudoJ2[])
 {
 
@@ -167,7 +167,7 @@ int afficheScore(int tab[][2], int nbParties, char pseudoJ1[], char pseudoJ2[])
     {
         *vainqueur = "\e[1;32mTout le monde ! C'est une egalite !\e[0m";
     }
-    printf("Total de \e[1;34m %s \e[0m: %d\nTotal de \e[1;31m%s\e[0m : %d\nVainqueur Global : %s\n", pseudoJ1, totalJ1, pseudoJ2, totalJ2, *vainqueur);
+    printf("\nTotal de \e[1;34m %s \e[0m: %d\nTotal de \e[1;31m%s\e[0m : %d\nVainqueur Global : %s\n", pseudoJ1, totalJ1, pseudoJ2, totalJ2, *vainqueur);
     return 0;
 }
 
@@ -178,6 +178,7 @@ int NouvellePartie(int *EnJeu)
         printf("Souhaitez vous continuer a jouer? (0 si non, 1 si oui) ");
         scanf("%d", &(*EnJeu));
     } while (*EnJeu != 1 && *EnJeu != 0);
+    return 0;
 }
 
 void comptePoints(int tab[7][7], int ligne, int colonne, int score[][2], int nbParties)
@@ -215,7 +216,7 @@ void comptePoints(int tab[7][7], int ligne, int colonne, int score[][2], int nbP
 int main()
 {
 
-    int plateauJeu[7][7], enJeu = 1, ligne, colonne, nbPartie = 0, scoreTotal[50][2], firstPlayer = 1, x;
+    int plateauJeu[7][7], enJeu = 1, ligne, colonne, nbPartie = 0, scoreTotal[50][2], firstPlayer = 1;
     char pseudoJ1[30], pseudoJ2[30];
     afficheRegles();
     getpseudo(1, pseudoJ1);
