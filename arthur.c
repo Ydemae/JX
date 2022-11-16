@@ -221,6 +221,7 @@ int main()
     afficheRegles();
     getpseudo(1, pseudoJ1);
     getpseudo(2, pseudoJ2);
+    printf("%s votre couleur est le \e[1;34mbleu\e[0m\n%s votre couleur est le \e[1;31mrouge\e[0m\n", pseudoJ1, pseudoJ2);
     while (enJeu == 1)
     {
         effacerTab(plateauJeu);
