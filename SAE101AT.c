@@ -1,16 +1,16 @@
 #include <stdio.h>
 
-void afficheRegles(); //Module qui affiche les règles du jeu
+void afficheRegles(); //affiche les règles du jeu si l'utilisateur le veut
 
-void creerplateau(int *ligne, int *colonne); //Module qui récupère la taille du plateau
+void creerplateau(int *ligne, int *colonne); //Récupère la taille du plateau qui sera utilisée tout au long de la partie
 
-void effacerTab(int tab[7][7]); //Module qui efface le tableau en remplaçant toutes les cases par des 0
+void effacerTab(int tab[7][7]); //Efface le tableau en remplaçant toutes les cases par des 0
 
-char * getpseudo(int numJoueur, char pseudo[]); //Fonction qui récupère le pseudo d'un joueur
+char * getpseudo(int numJoueur, char pseudo[]); //Récupère le pseudo d'un joueur
 
-int afficheTab(int tab[7][7], int ligne, int colonne); //Module qui affiche le tableau et les jetons de différentes couleurs
+int afficheTab(int tab[7][7], int ligne, int colonne); //Affiche le tableau et les jetons de différentes couleurs
 
-void tour(int nbTour, int tab[7][7], int ligne, int colonne, int firstPlayer); //Module qui joue un tour, à noter qu'un tour fait jouer les deux joueurs
+void tour(int nbTour, int tab[7][7], int ligne, int colonne, int firstPlayer); //Joue un tour, à noter qu'un tour fait jouer les deux joueurs chacun leur tour
 
 int afficheScore(int tab[][2], int nbParties, char pseudoJ1[], char pseudoJ2[]); //Affiche le score de toutes les parties ainsi que le total et les vainqueurs de chaque partie et le vainqueur global
 
@@ -131,7 +131,7 @@ int afficheTab(int tab[7][7], int ligne, int colonne)
 void tour(int nbTour, int tab[7][7], int ligne, int colonne, int firstPlayer)
 {
     int ligneCible, colonneCible;
-    if (firstPlayer == 1)
+    if (firstPlayer == 1) //Condition vérifiant quel joueur joue en premier
     {
         for (int i = 1; i <= 2; i++)
         {
@@ -193,7 +193,7 @@ int afficheScore(int tab[][2], int nbParties, char pseudoJ1[], char pseudoJ2[])
 {
 
     int totalJ1 = 0, totalJ2 = 0;
-    char *vainqueur[30];
+    char *vainqueur[30]; //Un pointeur est nécessaire pour pouvoir modifier plus facilement la chaîne
     for (int i = 0; i <= nbParties; i++)
     {
         if (tab[i][0] > tab[i][1])
