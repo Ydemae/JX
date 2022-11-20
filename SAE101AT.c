@@ -66,7 +66,7 @@ void creerplateau(int *ligne, int *colonne)
     {
         printf("Donner le nombre de lignes du plateau, ce nombre doit etre impair. \n");
         scanf("%d", &(*ligne));
-        getchar();
+        getchar(); //utilisation de getchar() pour éviter les erreurs si un utilisateur saisit un caractère
         printf("Donner le nombre de colonnes du plateau, ce nombre doit etre impair. \n");
         scanf("%d", &(*colonne));
         getchar();
@@ -140,7 +140,7 @@ void tour(int nbTour, int tab[7][7], int ligne, int colonne, int firstPlayer)
             {
                 printf("Sur quelle ligne voulez vous placer votre jeton? ");
                 scanf("%d", &ligneCible);
-                getchar();
+                getchar();//utilisation de getchar() pour éviter les erreurs si un utilisateur saisit un caractère
                 printf("Dans quelle colonne voulez-vous placer votre jeton? ");
                 scanf("%d", &colonneCible);
                 getchar();
